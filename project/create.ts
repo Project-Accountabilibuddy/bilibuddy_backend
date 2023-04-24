@@ -44,7 +44,7 @@ module.exports.handler = async (
       throw new SyntaxError("missing project name in body");
     }
 
-    // const id = event.requestContext.authorizer.jwt.claims.sub;
+    const id = event.requestContext.authorizer.jwt.claims.sub;
     const projectName = JSON.parse(event.body).projectName;
     const today = new Date();
 
@@ -52,7 +52,7 @@ module.exports.handler = async (
     const params: Params = {
       TableName: TABLE_NAME,
       Item: {
-        id: "TODO",
+        id,
         projectName,
         projectStartDate: today.toISOString(),
         userCompletedSignUpFlow: false,

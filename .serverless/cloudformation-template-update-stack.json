@@ -77,6 +77,18 @@
         "LogGroupName": "/aws/lambda/bilibuddy-backend-dev-create"
       }
     },
+    "ReadLogGroup": {
+      "Type": "AWS::Logs::LogGroup",
+      "Properties": {
+        "LogGroupName": "/aws/lambda/bilibuddy-backend-dev-read"
+      }
+    },
+    "UpdateLogGroup": {
+      "Type": "AWS::Logs::LogGroup",
+      "Properties": {
+        "LogGroupName": "/aws/lambda/bilibuddy-backend-dev-update"
+      }
+    },
     "IamRoleLambdaExecution": {
       "Type": "AWS::IAM::Role",
       "Properties": {
@@ -173,7 +185,7 @@
           "S3Bucket": {
             "Ref": "ServerlessDeploymentBucket"
           },
-          "S3Key": "serverless/bilibuddy-backend/dev/1682370384597-2023-04-24T21:06:24.597Z/bilibuddy-backend.zip"
+          "S3Key": "serverless/bilibuddy-backend/dev/1682373870715-2023-04-24T22:04:30.715Z/bilibuddy-backend.zip"
         },
         "Handler": "project/create.handler",
         "Runtime": "nodejs18.x",
@@ -197,15 +209,99 @@
         "CreateLogGroup"
       ]
     },
-    "CreateLambdaVersiond7GIz9l73cZqkaO9fczw38ly0xu4LxVfy55SJ7Z4zk": {
+    "ReadLambdaFunction": {
+      "Type": "AWS::Lambda::Function",
+      "Properties": {
+        "Code": {
+          "S3Bucket": {
+            "Ref": "ServerlessDeploymentBucket"
+          },
+          "S3Key": "serverless/bilibuddy-backend/dev/1682373870715-2023-04-24T22:04:30.715Z/bilibuddy-backend.zip"
+        },
+        "Handler": "project/update.handler",
+        "Runtime": "nodejs18.x",
+        "FunctionName": "bilibuddy-backend-dev-read",
+        "MemorySize": 1024,
+        "Timeout": 6,
+        "Description": "Bilibuddy get project",
+        "Environment": {
+          "Variables": {
+            "DYNAMODB_TABLE": "bilibuddy-backend-dev"
+          }
+        },
+        "Role": {
+          "Fn::GetAtt": [
+            "IamRoleLambdaExecution",
+            "Arn"
+          ]
+        }
+      },
+      "DependsOn": [
+        "ReadLogGroup"
+      ]
+    },
+    "UpdateLambdaFunction": {
+      "Type": "AWS::Lambda::Function",
+      "Properties": {
+        "Code": {
+          "S3Bucket": {
+            "Ref": "ServerlessDeploymentBucket"
+          },
+          "S3Key": "serverless/bilibuddy-backend/dev/1682373870715-2023-04-24T22:04:30.715Z/bilibuddy-backend.zip"
+        },
+        "Handler": "project/update.handler",
+        "Runtime": "nodejs18.x",
+        "FunctionName": "bilibuddy-backend-dev-update",
+        "MemorySize": 1024,
+        "Timeout": 6,
+        "Description": "Bilibuddy update project",
+        "Environment": {
+          "Variables": {
+            "DYNAMODB_TABLE": "bilibuddy-backend-dev"
+          }
+        },
+        "Role": {
+          "Fn::GetAtt": [
+            "IamRoleLambdaExecution",
+            "Arn"
+          ]
+        }
+      },
+      "DependsOn": [
+        "UpdateLogGroup"
+      ]
+    },
+    "CreateLambdaVersionpca1euS36nSppc9Y0Ywp7MG1doxEzo0D4V1BaCEc": {
       "Type": "AWS::Lambda::Version",
       "DeletionPolicy": "Retain",
       "Properties": {
         "FunctionName": {
           "Ref": "CreateLambdaFunction"
         },
-        "CodeSha256": "MBdu1UdORCeVFWEs6hlzkTA16cNnEGqGGb2OQQ5ZrXs=",
+        "CodeSha256": "jlN9LvSy077NMv77Qwdmye08piDz3jILkJeHNiKNkOg=",
         "Description": "Bilibuddy create project"
+      }
+    },
+    "ReadLambdaVersionOEJkudzTnCOv1gMK3UwcDH8HRvShwZh7mKnxcmugoY": {
+      "Type": "AWS::Lambda::Version",
+      "DeletionPolicy": "Retain",
+      "Properties": {
+        "FunctionName": {
+          "Ref": "ReadLambdaFunction"
+        },
+        "CodeSha256": "jlN9LvSy077NMv77Qwdmye08piDz3jILkJeHNiKNkOg=",
+        "Description": "Bilibuddy get project"
+      }
+    },
+    "UpdateLambdaVersion72FeDOX4vH1EmfHwq10IsvaFH9JWytOSxE9q9ATFqy0": {
+      "Type": "AWS::Lambda::Version",
+      "DeletionPolicy": "Retain",
+      "Properties": {
+        "FunctionName": {
+          "Ref": "UpdateLambdaFunction"
+        },
+        "CodeSha256": "jlN9LvSy077NMv77Qwdmye08piDz3jILkJeHNiKNkOg=",
+        "Description": "Bilibuddy update project"
       }
     },
     "HttpApi": {
@@ -225,6 +321,8 @@
           ],
           "AllowMethods": [
             "OPTIONS",
+            "PUT",
+            "GET",
             "POST"
           ],
           "AllowOrigins": [
@@ -300,13 +398,13 @@
         "TimeoutInMillis": 30000
       }
     },
-    "HttpApiRoutePostProjects": {
+    "HttpApiRoutePutProjects": {
       "Type": "AWS::ApiGatewayV2::Route",
       "Properties": {
         "ApiId": {
           "Ref": "HttpApi"
         },
-        "RouteKey": "POST /projects",
+        "RouteKey": "PUT /projects",
         "Target": {
           "Fn::Join": [
             "/",
@@ -320,6 +418,156 @@
         }
       },
       "DependsOn": "HttpApiIntegrationCreate"
+    },
+    "ReadLambdaPermissionHttpApi": {
+      "Type": "AWS::Lambda::Permission",
+      "Properties": {
+        "FunctionName": {
+          "Fn::GetAtt": [
+            "ReadLambdaFunction",
+            "Arn"
+          ]
+        },
+        "Action": "lambda:InvokeFunction",
+        "Principal": "apigateway.amazonaws.com",
+        "SourceArn": {
+          "Fn::Join": [
+            "",
+            [
+              "arn:",
+              {
+                "Ref": "AWS::Partition"
+              },
+              ":execute-api:",
+              {
+                "Ref": "AWS::Region"
+              },
+              ":",
+              {
+                "Ref": "AWS::AccountId"
+              },
+              ":",
+              {
+                "Ref": "HttpApi"
+              },
+              "/*"
+            ]
+          ]
+        }
+      }
+    },
+    "HttpApiIntegrationRead": {
+      "Type": "AWS::ApiGatewayV2::Integration",
+      "Properties": {
+        "ApiId": {
+          "Ref": "HttpApi"
+        },
+        "IntegrationType": "AWS_PROXY",
+        "IntegrationUri": {
+          "Fn::GetAtt": [
+            "ReadLambdaFunction",
+            "Arn"
+          ]
+        },
+        "PayloadFormatVersion": "2.0",
+        "TimeoutInMillis": 30000
+      }
+    },
+    "HttpApiRouteGetProjects": {
+      "Type": "AWS::ApiGatewayV2::Route",
+      "Properties": {
+        "ApiId": {
+          "Ref": "HttpApi"
+        },
+        "RouteKey": "GET /projects",
+        "Target": {
+          "Fn::Join": [
+            "/",
+            [
+              "integrations",
+              {
+                "Ref": "HttpApiIntegrationRead"
+              }
+            ]
+          ]
+        }
+      },
+      "DependsOn": "HttpApiIntegrationRead"
+    },
+    "UpdateLambdaPermissionHttpApi": {
+      "Type": "AWS::Lambda::Permission",
+      "Properties": {
+        "FunctionName": {
+          "Fn::GetAtt": [
+            "UpdateLambdaFunction",
+            "Arn"
+          ]
+        },
+        "Action": "lambda:InvokeFunction",
+        "Principal": "apigateway.amazonaws.com",
+        "SourceArn": {
+          "Fn::Join": [
+            "",
+            [
+              "arn:",
+              {
+                "Ref": "AWS::Partition"
+              },
+              ":execute-api:",
+              {
+                "Ref": "AWS::Region"
+              },
+              ":",
+              {
+                "Ref": "AWS::AccountId"
+              },
+              ":",
+              {
+                "Ref": "HttpApi"
+              },
+              "/*"
+            ]
+          ]
+        }
+      }
+    },
+    "HttpApiIntegrationUpdate": {
+      "Type": "AWS::ApiGatewayV2::Integration",
+      "Properties": {
+        "ApiId": {
+          "Ref": "HttpApi"
+        },
+        "IntegrationType": "AWS_PROXY",
+        "IntegrationUri": {
+          "Fn::GetAtt": [
+            "UpdateLambdaFunction",
+            "Arn"
+          ]
+        },
+        "PayloadFormatVersion": "2.0",
+        "TimeoutInMillis": 30000
+      }
+    },
+    "HttpApiRoutePostProjects": {
+      "Type": "AWS::ApiGatewayV2::Route",
+      "Properties": {
+        "ApiId": {
+          "Ref": "HttpApi"
+        },
+        "RouteKey": "POST /projects",
+        "Target": {
+          "Fn::Join": [
+            "/",
+            [
+              "integrations",
+              {
+                "Ref": "HttpApiIntegrationUpdate"
+              }
+            ]
+          ]
+        }
+      },
+      "DependsOn": "HttpApiIntegrationUpdate"
     },
     "TodosDynamoDbTable": {
       "Type": "AWS::DynamoDB::Table",
@@ -354,10 +602,28 @@
     "CreateLambdaFunctionQualifiedArn": {
       "Description": "Current Lambda function version",
       "Value": {
-        "Ref": "CreateLambdaVersiond7GIz9l73cZqkaO9fczw38ly0xu4LxVfy55SJ7Z4zk"
+        "Ref": "CreateLambdaVersionpca1euS36nSppc9Y0Ywp7MG1doxEzo0D4V1BaCEc"
       },
       "Export": {
         "Name": "sls-bilibuddy-backend-dev-CreateLambdaFunctionQualifiedArn"
+      }
+    },
+    "ReadLambdaFunctionQualifiedArn": {
+      "Description": "Current Lambda function version",
+      "Value": {
+        "Ref": "ReadLambdaVersionOEJkudzTnCOv1gMK3UwcDH8HRvShwZh7mKnxcmugoY"
+      },
+      "Export": {
+        "Name": "sls-bilibuddy-backend-dev-ReadLambdaFunctionQualifiedArn"
+      }
+    },
+    "UpdateLambdaFunctionQualifiedArn": {
+      "Description": "Current Lambda function version",
+      "Value": {
+        "Ref": "UpdateLambdaVersion72FeDOX4vH1EmfHwq10IsvaFH9JWytOSxE9q9ATFqy0"
+      },
+      "Export": {
+        "Name": "sls-bilibuddy-backend-dev-UpdateLambdaFunctionQualifiedArn"
       }
     },
     "HttpApiId": {

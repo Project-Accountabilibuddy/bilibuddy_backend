@@ -29,6 +29,24 @@ functions:
     events:
       - httpApi:
           path: /projects
+          method: put
+          cors: true
+
+  read:
+    handler: project/update.handler
+    description: Bilibuddy get project
+    events:
+      - httpApi:
+          path: /projects
+          method: get
+          cors: true
+
+  update:
+    handler: project/update.handler
+    description: Bilibuddy update project
+    events:
+      - httpApi:
+          path: /projects
           method: post
           cors: true
 
