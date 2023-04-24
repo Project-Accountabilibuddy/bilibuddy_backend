@@ -16,7 +16,6 @@ provider:
         - Effect: Allow
           Action:
             - dynamodb:Query
-            - dynamodb:Scan
             - dynamodb:GetItem
             - dynamodb:PutItem
             - dynamodb:UpdateItem
@@ -31,30 +30,6 @@ functions:
       - httpApi:
           path: /projects
           method: post
-
-  list:
-    handler: project/list.list
-    description: Bilibuddy get all projects
-    events:
-      - httpApi:
-          path: /projects
-          method: get
-
-  get:
-    handler: project/get.get
-    description: Bilibuddy get a project
-    events:
-      - httpApi:
-          path: /projects/{id}
-          method: get
-
-  update:
-    handler: project/update.update
-    description: Bilibuddy update project
-    events:
-      - httpApi:
-          path: /projects/{id}
-          method: put
 
 resources:
   Resources:
