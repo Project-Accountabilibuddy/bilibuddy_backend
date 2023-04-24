@@ -23,6 +23,9 @@ provider:
           Resource: "arn:aws:dynamodb:${aws:region}:*:table/${self:provider.environment.DYNAMODB_TABLE}"
 
 functions:
+  verify-token:
+    handler: project/authorize.handler
+
   create:
     handler: project/create.handler
     description: Bilibuddy create project
@@ -30,6 +33,11 @@ functions:
       - httpApi:
           path: /projects
           method: post
+          cors: true
+          authorizer:
+            name: verify-token
+            identitySource: method.request.header.Authorization
+            resultTtlInSeconds: 3600
 
 resources:
   Resources:

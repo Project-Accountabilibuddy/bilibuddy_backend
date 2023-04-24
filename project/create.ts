@@ -1,14 +1,42 @@
 import { DynamoDBClient } from "@aws-sdk/client-dynamodb";
 import { PutCommand } from "@aws-sdk/lib-dynamodb";
 
+type Item = {
+  id: string;
+  projectName: string;
+  projectStartDate: string;
+  userCompletedSignUpFlow: boolean;
+  userResponseWhatLongForm: string;
+  userResponseWhyLongForm: string;
+  userResponseSacrificeLongForm: string;
+  userResponseHatersLongForm: string;
+  weeksExpectedToComplete: string;
+  userResponseWhyShortForm: string;
+  userResponseHatersShortForm: string;
+  daysResponseFeed: string;
+};
+
+type Params = {
+  TableName: string;
+  Item: Item;
+};
+
 const ddbClient = new DynamoDBClient({ region: "us-east-1" });
 const TABLE_NAME = process.env.DYNAMODB_TABLE;
 
-module.exports.handler = async (event, ctx, cb) => {
+module.exports.handler = async (
+  event
+): Promise<{
+  statusCode: number;
+  body: string;
+  headers: {};
+}> => {
   console.log("CREATE PROJECT EVENT: ", event);
 
-  let body;
+  let body: string;
   let statusCode = 200;
+
+  // TODO: UPDATE TO INCLUDE CORS HEADERS
   const headers = {};
 
   try {
@@ -16,15 +44,15 @@ module.exports.handler = async (event, ctx, cb) => {
       throw new SyntaxError("missing project name in body");
     }
 
-    // const id = event.requestContext.authorizer.jwt.claims.sub;
+    const id = event.requestContext.authorizer.jwt.claims.sub;
     const projectName = JSON.parse(event.body).projectName;
     const today = new Date();
 
     // TODO: THINK ON THIS... UPDATING PROJECT NAME BLOWS OUT ALL OTHER FIELDS..
-    const params = {
+    const params: Params = {
       TableName: TABLE_NAME,
       Item: {
-        id: "TODO",
+        id,
         projectName,
         projectStartDate: today.toISOString(),
         userCompletedSignUpFlow: false,
@@ -40,7 +68,11 @@ module.exports.handler = async (event, ctx, cb) => {
     };
 
     const data = await ddbClient.send(new PutCommand(params));
-    return data;
+    return {
+      statusCode,
+      body: JSON.stringify(data),
+      headers,
+    };
   } catch (err) {
     statusCode = 400;
     body = err.message;
