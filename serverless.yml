@@ -5,7 +5,7 @@ frameworkVersion: "3"
 provider:
   name: aws
   runtime: nodejs18.x
-  lambdaHashingVersion: '20201221'
+  lambdaHashingVersion: "20201221"
   environment:
     DYNAMODB_TABLE: ${self:service}-${sls:stage}
   httpApi:
@@ -25,46 +25,48 @@ provider:
 
 functions:
   create:
-    handler: todos/create.create
+    handler: project/create.handler
+    description: Bilibuddy create project
     events:
       - httpApi:
-          path: /todos
+          path: /projects
           method: post
 
   list:
-    handler: todos/list.list
+    handler: project/list.list
+    description: Bilibuddy get all projects
     events:
       - httpApi:
-          path: /todos
+          path: /projects
           method: get
 
   get:
-    handler: todos/get.get
+    handler: project/get.get
+    description: Bilibuddy get a project
     events:
       - httpApi:
-          path: /todos/{id}
+          path: /projects/{id}
           method: get
 
   update:
-    handler: todos/update.update
+    handler: project/update.update
+    description: Bilibuddy update project
     events:
       - httpApi:
-          path: /todos/{id}
+          path: /projects/{id}
           method: put
 
 resources:
   Resources:
     TodosDynamoDbTable:
-      Type: 'AWS::DynamoDB::Table'
+      Type: "AWS::DynamoDB::Table"
       DeletionPolicy: Retain
       Properties:
         AttributeDefinitions:
-          -
-            AttributeName: id
+          - AttributeName: id
             AttributeType: S
         KeySchema:
-          -
-            AttributeName: id
+          - AttributeName: id
             KeyType: HASH
         BillingMode: PAY_PER_REQUEST
         TableName: ${self:provider.environment.DYNAMODB_TABLE}
