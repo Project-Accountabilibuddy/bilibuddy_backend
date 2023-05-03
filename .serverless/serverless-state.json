@@ -213,7 +213,7 @@
                 "S3Bucket": {
                   "Ref": "ServerlessDeploymentBucket"
                 },
-                "S3Key": "serverless/bilibuddy-backend/dev/1682373870715-2023-04-24T22:04:30.715Z/bilibuddy-backend.zip"
+                "S3Key": "serverless/bilibuddy-backend/dev/1683127236949-2023-05-03T15:20:36.949Z/bilibuddy-backend.zip"
               },
               "Handler": "project/create.handler",
               "Runtime": "nodejs18.x",
@@ -244,7 +244,7 @@
                 "S3Bucket": {
                   "Ref": "ServerlessDeploymentBucket"
                 },
-                "S3Key": "serverless/bilibuddy-backend/dev/1682373870715-2023-04-24T22:04:30.715Z/bilibuddy-backend.zip"
+                "S3Key": "serverless/bilibuddy-backend/dev/1683127236949-2023-05-03T15:20:36.949Z/bilibuddy-backend.zip"
               },
               "Handler": "project/update.handler",
               "Runtime": "nodejs18.x",
@@ -275,7 +275,7 @@
                 "S3Bucket": {
                   "Ref": "ServerlessDeploymentBucket"
                 },
-                "S3Key": "serverless/bilibuddy-backend/dev/1682373870715-2023-04-24T22:04:30.715Z/bilibuddy-backend.zip"
+                "S3Key": "serverless/bilibuddy-backend/dev/1683127236949-2023-05-03T15:20:36.949Z/bilibuddy-backend.zip"
               },
               "Handler": "project/update.handler",
               "Runtime": "nodejs18.x",
@@ -299,36 +299,36 @@
               "UpdateLogGroup"
             ]
           },
-          "CreateLambdaVersionpca1euS36nSppc9Y0Ywp7MG1doxEzo0D4V1BaCEc": {
+          "CreateLambdaVersionG7IgzYBydiaAhN4Xu2ufPpLUGXPahXnjOM9srM": {
             "Type": "AWS::Lambda::Version",
             "DeletionPolicy": "Retain",
             "Properties": {
               "FunctionName": {
                 "Ref": "CreateLambdaFunction"
               },
-              "CodeSha256": "jlN9LvSy077NMv77Qwdmye08piDz3jILkJeHNiKNkOg=",
+              "CodeSha256": "L5HQJuVyWhxQrF3cCa/HJpQQiY1hnXTKBp8wHefyc9w=",
               "Description": "Bilibuddy create project"
             }
           },
-          "ReadLambdaVersionOEJkudzTnCOv1gMK3UwcDH8HRvShwZh7mKnxcmugoY": {
+          "ReadLambdaVersioncZxWKZ6yk9u5v5HBQWDIrYr6mAKfet7mPE1u0FJYs": {
             "Type": "AWS::Lambda::Version",
             "DeletionPolicy": "Retain",
             "Properties": {
               "FunctionName": {
                 "Ref": "ReadLambdaFunction"
               },
-              "CodeSha256": "jlN9LvSy077NMv77Qwdmye08piDz3jILkJeHNiKNkOg=",
+              "CodeSha256": "L5HQJuVyWhxQrF3cCa/HJpQQiY1hnXTKBp8wHefyc9w=",
               "Description": "Bilibuddy get project"
             }
           },
-          "UpdateLambdaVersion72FeDOX4vH1EmfHwq10IsvaFH9JWytOSxE9q9ATFqy0": {
+          "UpdateLambdaVersionNdGQzVX9HodGsnZi5PYK3ApjAevbI8Wru2ghcNZGQ": {
             "Type": "AWS::Lambda::Version",
             "DeletionPolicy": "Retain",
             "Properties": {
               "FunctionName": {
                 "Ref": "UpdateLambdaFunction"
               },
-              "CodeSha256": "jlN9LvSy077NMv77Qwdmye08piDz3jILkJeHNiKNkOg=",
+              "CodeSha256": "L5HQJuVyWhxQrF3cCa/HJpQQiY1hnXTKBp8wHefyc9w=",
               "Description": "Bilibuddy update project"
             }
           },
@@ -621,7 +621,7 @@
           "CreateLambdaFunctionQualifiedArn": {
             "Description": "Current Lambda function version",
             "Value": {
-              "Ref": "CreateLambdaVersionpca1euS36nSppc9Y0Ywp7MG1doxEzo0D4V1BaCEc"
+              "Ref": "CreateLambdaVersionG7IgzYBydiaAhN4Xu2ufPpLUGXPahXnjOM9srM"
             },
             "Export": {
               "Name": "sls-bilibuddy-backend-dev-CreateLambdaFunctionQualifiedArn"
@@ -630,7 +630,7 @@
           "ReadLambdaFunctionQualifiedArn": {
             "Description": "Current Lambda function version",
             "Value": {
-              "Ref": "ReadLambdaVersionOEJkudzTnCOv1gMK3UwcDH8HRvShwZh7mKnxcmugoY"
+              "Ref": "ReadLambdaVersioncZxWKZ6yk9u5v5HBQWDIrYr6mAKfet7mPE1u0FJYs"
             },
             "Export": {
               "Name": "sls-bilibuddy-backend-dev-ReadLambdaFunctionQualifiedArn"
@@ -639,7 +639,7 @@
           "UpdateLambdaFunctionQualifiedArn": {
             "Description": "Current Lambda function version",
             "Value": {
-              "Ref": "UpdateLambdaVersion72FeDOX4vH1EmfHwq10IsvaFH9JWytOSxE9q9ATFqy0"
+              "Ref": "UpdateLambdaVersionNdGQzVX9HodGsnZi5PYK3ApjAevbI8Wru2ghcNZGQ"
             },
             "Export": {
               "Name": "sls-bilibuddy-backend-dev-UpdateLambdaFunctionQualifiedArn"
@@ -787,7 +787,7 @@
         "timeout": 6,
         "runtime": "nodejs18.x",
         "vpc": {},
-        "versionLogicalId": "CreateLambdaVersionpca1euS36nSppc9Y0Ywp7MG1doxEzo0D4V1BaCEc"
+        "versionLogicalId": "CreateLambdaVersionG7IgzYBydiaAhN4Xu2ufPpLUGXPahXnjOM9srM"
       },
       "read": {
         "handler": "project/update.handler",
@@ -809,7 +809,7 @@
         "timeout": 6,
         "runtime": "nodejs18.x",
         "vpc": {},
-        "versionLogicalId": "ReadLambdaVersionOEJkudzTnCOv1gMK3UwcDH8HRvShwZh7mKnxcmugoY"
+        "versionLogicalId": "ReadLambdaVersioncZxWKZ6yk9u5v5HBQWDIrYr6mAKfet7mPE1u0FJYs"
       },
       "update": {
         "handler": "project/update.handler",
@@ -831,7 +831,7 @@
         "timeout": 6,
         "runtime": "nodejs18.x",
         "vpc": {},
-        "versionLogicalId": "UpdateLambdaVersion72FeDOX4vH1EmfHwq10IsvaFH9JWytOSxE9q9ATFqy0"
+        "versionLogicalId": "UpdateLambdaVersionNdGQzVX9HodGsnZi5PYK3ApjAevbI8Wru2ghcNZGQ"
       }
     },
     "resources": {
@@ -879,7 +879,7 @@
     "artifact": "/Users/nicholasfray/Desktop/bilibuddy-backend/.serverless/bilibuddy-backend.zip"
   },
   "package": {
-    "artifactDirectoryName": "serverless/bilibuddy-backend/dev/1682373870715-2023-04-24T22:04:30.715Z",
+    "artifactDirectoryName": "serverless/bilibuddy-backend/dev/1683127236949-2023-05-03T15:20:36.949Z",
     "artifact": "bilibuddy-backend.zip"
   }
 }
